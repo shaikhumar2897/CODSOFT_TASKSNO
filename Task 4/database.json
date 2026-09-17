@@ -1,0 +1,68 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "name": "J.K. Rowling",
+      "email": "jkrowling@example.com"
+    },
+    {
+      "id": 2,
+      "name": "Robert C. Martin",
+      "email": "robert@example.com"
+    },
+    {
+      "id": 3,
+      "name": "George Orwell",
+      "email": "george@example.com"
+    }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "title": "Harry Potter and the Philosopher's Stone",
+      "isbn": "9780747532699",
+      "authorId": 1,
+      "category": "Fantasy",
+      "year": 1997,
+      "totalCopies": 5,
+      "availableCopies": 5
+    },
+    {
+      "id": 2,
+      "title": "Clean Code",
+      "isbn": "9780132350884",
+      "authorId": 2,
+      "category": "Programming",
+      "year": 2008,
+      "totalCopies": 3,
+      "availableCopies": 3
+    },
+    {
+      "id": 3,
+      "title": "1984",
+      "isbn": "9780451524935",
+      "authorId": 3,
+      "category": "Fiction",
+      "year": 1949,
+      "totalCopies": 4,
+      "availableCopies": 4
+    }
+  ],
+  "members": [
+    {
+      "id": 1,
+      "name": "Umar Shaikh",
+      "email": "umar@example.com",
+      "phone": "9876543210",
+      "membershipType": "Student"
+    },
+    {
+      "id": 2,
+      "name": "Rahul Patil",
+      "email": "rahul@example.com",
+      "phone": "9876543211",
+      "membershipType": "Student"
+    }
+  ],
+  "issuedBooks": []
+}

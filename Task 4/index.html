@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management System</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">📚</div>
+        <div><h2>Libra<span>ry</span></h2><small>Management System</small></div>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-page="dashboard">🏠 Dashboard</button>
+        <button class="nav-btn" data-page="books">📖 Books</button>
+        <button class="nav-btn" data-page="members">👥 Members</button>
+        <button class="nav-btn" data-page="authors">✍️ Authors</button>
+        <button class="nav-btn" data-page="issues">🔄 Borrow / Return</button>
+        <button class="nav-btn" data-page="reports">📊 Reports</button>
+      </nav>
+      <div class="side-footer">CodSoft • Task 4</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <button id="mobileMenu" class="icon-btn">☰</button>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="pageSub">Library overview and quick actions</p>
+        </div>
+        <div class="status"><span></span> API Connected</div>
+      </header>
+
+      <section id="dashboard" class="page active">
+        <div class="stats">
+          <div class="stat"><div class="stat-icon">📚</div><div><b id="sBooks">0</b><small>Total Books</small></div></div>
+          <div class="stat"><div class="stat-icon">👥</div><div><b id="sMembers">0</b><small>Members</small></div></div>
+          <div class="stat"><div class="stat-icon">📦</div><div><b id="sAvailable">0</b><small>Available Copies</small></div></div>
+          <div class="stat"><div class="stat-icon">🔄</div><div><b id="sIssued">0</b><small>Active Issues</small></div></div>
+        </div>
+
+        <div class="grid two">
+          <div class="card">
+            <div class="card-head"><h3>Quick Actions</h3></div>
+            <div class="quick">
+              <button onclick="openModal('bookModal')">➕ Add Book</button>
+              <button onclick="openModal('memberModal')">👤 Add Member</button>
+              <button onclick="openModal('authorModal')">✍️ Add Author</button>
+              <button onclick="go('issues')">🔄 Issue Book</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Library Status</h3></div>
+            <button class="big-report" onclick="go('reports')">📊 View Full Library Report <span>→</span></button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Recently Added Books</h3><button class="link-btn" onclick="go('books')">View all →</button></div>
+          <div id="recentBooks" class="table-wrap"></div>
+        </div>
+      </section>
+
+      <section id="books" class="page">
+        <div class="toolbar">
+          <input id="bookSearch" placeholder="🔎 Search title or ISBN..." oninput="loadBooks()">
+          <select id="bookCategory" onchange="loadBooks()"><option value="">All categories</option></select>
+          <label class="check"><input type="checkbox" id="availableOnly" onchange="loadBooks()"> Available only</label>
+          <button class="primary" onclick="openModal('bookModal')">＋ Add Book</button>
+        </div>
+        <div class="card"><div id="booksTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="members" class="page">
+        <div class="toolbar">
+          <input id="memberSearch" placeholder="🔎 Search member..." oninput="loadMembers()">
+          <button class="primary" onclick="openModal('memberModal')">＋ Add Member</button>
+        </div>
+        <div class="card"><div id="membersTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="authors" class="page">
+        <div class="toolbar">
+          <input id="authorSearch" placeholder="🔎 Search author..." oninput="loadAuthors()">
+          <button class="primary" onclick="openModal('authorModal')">＋ Add Author</button>
+        </div>
+        <div class="card"><div id="authorsTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="issues" class="page">
+        <div class="toolbar">
+          <select id="issueStatus" onchange="loadIssues()"><option value="">All records</option><option value="issued">Currently borrowed</option><option value="returned">Returned</option></select>
+          <button class="primary" onclick="openIssueModal()">🔄 Issue a Book</button>
+        </div>
+        <div class="card"><div id="issuesTable" class="table-wrap"></div></div>
+      </section>
+
+      <section id="reports" class="page">
+        <div class="stats">
+          <div class="stat"><div class="stat-icon">📚</div><div><b id="rBooks">0</b><small>Book Titles</small></div></div>
+          <div class="stat"><div class="stat-icon">📦</div><div><b id="rCopies">0</b><small>Total Copies</small></div></div>
+          <div class="stat"><div class="stat-icon">⚠️</div><div><b id="rOverdue">0</b><small>Overdue</small></div></div>
+          <div class="stat"><div class="stat-icon">₹</div><div><b id="rFees">₹0</b><small>Late Fees</small></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>Library Report</h3><button class="primary" onclick="loadReports()">↻ Refresh</button></div>
+          <div id="reportContent" class="report-grid"></div>
+        </div>
+        <div class="card"><div class="card-head"><h3>Overdue Records</h3></div><div id="overdueTable" class="table-wrap"></div></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Book modal -->
+  <div class="modal" id="bookModal"><div class="modal-box">
+    <div class="modal-head"><h2 id="bookModalTitle">Add Book</h2><button onclick="closeModal('bookModal')">×</button></div>
+    <form id="bookForm">
+      <input type="hidden" id="bookId">
+      <label>Book Title<input id="bookTitle" required></label>
+      <label>ISBN<input id="bookIsbn" required></label>
+      <label>Author<select id="bookAuthor" required></select></label>
+      <div class="form-row"><label>Category<input id="bookCategoryInput" required></label><label>Year<input id="bookYear" type="number" required></label></div>
+      <label>Total Copies<input id="bookCopies" type="number" min="1" required></label>
+      <button class="primary full">Save Book</button>
+    </form>
+  </div></div>
+
+  <!-- Member modal -->
+  <div class="modal" id="memberModal"><div class="modal-box">
+    <div class="modal-head"><h2>Add Member</h2><button onclick="closeModal('memberModal')">×</button></div>
+    <form id="memberForm">
+      <label>Name<input id="memberName" required></label>
+      <label>Email<input id="memberEmail" type="email" required></label>
+      <label>Phone<input id="memberPhone" required></label>
+      <label>Membership Type<select id="memberType"><option>Student</option><option>Regular</option><option>Premium</option></select></label>
+      <button class="primary full">Save Member</button>
+    </form>
+  </div></div>
+
+  <!-- Author modal -->
+  <div class="modal" id="authorModal"><div class="modal-box">
+    <div class="modal-head"><h2>Add Author</h2><button onclick="closeModal('authorModal')">×</button></div>
+    <form id="authorForm">
+      <label>Author Name<input id="authorName" required></label>
+      <label>Email<input id="authorEmail" type="email" required></label>
+      <button class="primary full">Save Author</button>
+    </form>
+  </div></div>
+
+  <!-- Issue modal -->
+  <div class="modal" id="issueModal"><div class="modal-box">
+    <div class="modal-head"><h2>Issue Book</h2><button onclick="closeModal('issueModal')">×</button></div>
+    <form id="issueForm">
+      <label>Book<select id="issueBook" required></select></label>
+      <label>Member<select id="issueMember" required></select></label>
+      <label>Borrowing Days<input id="issueDays" type="number" min="1" max="30" value="14" required></label>
+      <button class="primary full">Issue Book</button>
+    </form>
+  </div></div>
+
+  <div id="toast"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
