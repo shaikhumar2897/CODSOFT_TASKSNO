@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Management System</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">👤</div>
+            <div>
+                <h2>Contact<span>Hub</span></h2>
+                <small>Management System</small>
+            </div>
+        </div>
+
+        <nav>
+            <button class="nav active" data-page="dashboard">🏠 Dashboard</button>
+            <button class="nav" data-page="contacts">👥 Contacts</button>
+        </nav>
+
+        <div class="side-note">
+            <b>CodSoft Task 2</b>
+            <small>REST API + Web Interface</small>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div class="heading">
+                <button id="menu" class="menu">☰</button>
+                <div>
+                    <h1 id="title">Dashboard</h1>
+                    <p id="subtitle">Manage your personal and professional contacts</p>
+                </div>
+            </div>
+            <div class="connected"><i></i> API Connected</div>
+        </header>
+
+        <section id="dashboard" class="page active">
+            <div class="stats">
+                <div class="stat">
+                    <div class="icon">👥</div>
+                    <div><strong id="totalContacts">0</strong><span>Total Contacts</span></div>
+                </div>
+                <div class="stat">
+                    <div class="icon">🏢</div>
+                    <div><strong id="totalCompanies">0</strong><span>Companies</span></div>
+                </div>
+                <div class="stat">
+                    <div class="icon">📱</div>
+                    <div><strong>REST</strong><span>API Type</span></div>
+                </div>
+                <div class="stat">
+                    <div class="icon">🔒</div>
+                    <div><strong>Active</strong><span>System Status</span></div>
+                </div>
+            </div>
+
+            <div class="welcome card">
+                <div>
+                    <span class="eyebrow">CONTACT MANAGEMENT</span>
+                    <h2>Keep every important contact organized.</h2>
+                    <p>Add, update, search and delete personal or professional contacts from one simple interface.</p>
+                    <button class="primary" onclick="openAdd()">＋ Add New Contact</button>
+                </div>
+                <div class="welcome-art">📇</div>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <h3>Recently Added</h3>
+                    <button class="text-btn" onclick="go('contacts')">View all →</button>
+                </div>
+                <div id="recent"></div>
+            </div>
+        </section>
+
+        <section id="contacts" class="page">
+            <div class="toolbar">
+                <input id="search" placeholder="🔎 Search name, email, phone, address or company..." oninput="loadContacts()">
+                <select id="sort" onchange="loadContacts()">
+                    <option value="name">Sort: Name</option>
+                    <option value="email">Sort: Email</option>
+                    <option value="company">Sort: Company</option>
+                    <option value="createdAt">Sort: Recently Added</option>
+                </select>
+                <select id="order" onchange="loadContacts()">
+                    <option value="asc">A → Z</option>
+                    <option value="desc">Z → A</option>
+                </select>
+                <button class="primary" onclick="openAdd()">＋ Add Contact</button>
+            </div>
+
+            <div class="card">
+                <div class="card-head">
+                    <h3>All Contacts</h3>
+                    <span id="count" class="count">0 contacts</span>
+                </div>
+                <div id="contactTable" class="table-wrap"></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-box">
+        <div class="modal-head">
+            <div>
+                <h2 id="modalTitle">Add Contact</h2>
+                <p>Enter complete contact information.</p>
+            </div>
+            <button class="close" onclick="closeModal()">×</button>
+        </div>
+
+        <form id="contactForm">
+            <input type="hidden" id="contactId">
+
+            <label>Full Name
+                <input id="name" required placeholder="e.g. Umar Shaikh">
+            </label>
+
+            <label>Email Address
+                <input id="email" type="email" required placeholder="name@example.com">
+            </label>
+
+            <label>Phone Number
+                <input id="phone" required placeholder="9876543210">
+            </label>
+
+            <label>Address
+                <input id="address" required placeholder="Mumbai, Maharashtra">
+            </label>
+
+            <label>Company / Organization
+                <input id="company" required placeholder="Company name">
+            </label>
+
+            <div class="form-actions">
+                <button type="button" class="secondary" onclick="closeModal()">Cancel</button>
+                <button class="primary" id="saveBtn">Save Contact</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
